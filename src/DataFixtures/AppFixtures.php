@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\City;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -38,6 +39,19 @@ class AppFixtures extends Fixture
         $camille->setPassword($this->hasher->hashPassword($camille, 'motdepasse'));
         $camille->setCreatedAt(new \DateTimeImmutable('2026-02-04'));
         $manager->persist($camille);
+
+        // 2. Villes du réseau
+        $cityNames = [
+            'Paris', 'Lyon', 'Marseille', 'Bordeaux', 'Lille',
+            'Strasbourg', 'Toulouse', 'Nantes', 'Dijon', 'Brest'
+        ];
+
+        foreach ($cityNames as $name) {
+            $city = new City();
+            $city->setName($name);
+            $city->setCreatedAt(new \DateTimeImmutable());
+            $manager->persist($city);
+        }
 
         $manager->flush();
     }
